@@ -1,0 +1,48 @@
+<script type="text/javascript">
+	var qs = (function(a) {
+    if (a == "") return {};
+    var b = {};
+    for (var i = 0; i < a.length; ++i)
+    {
+        var p=a[i].split('=', 2);
+        if (p.length == 1)
+            b[p[0]] = "";
+        else
+            b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+    }
+    return b;
+})(window.location.search.substr(1).split('&'));
+
+            if (qs["code"] === "") {
+                alert("CODE: Empty")
+            } else if(qs["code"] === undefined) {
+                //alert("CODE: Undefined")
+            } else {
+                //alert("else")
+                url = "http://178.128.251.254:3000/oauth/token?client_id="+qs["client_id"]+"&client_secret="+qs["client_secret"]+"&grant_type=authorization_code&code="+qs["code"]+"&redirect_uri=my-gpi.io/gpitest";
+
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                         if (this.readyState == 4 && this.status == 200) {
+                             //alert(this.responseText);
+                             //localStorage.tokenObj.clear();
+                             localStorage.tokenObj = this.responseText;
+                         } else {
+                            //alert("failed");
+                            //alert(this.responseText);
+                            //localStorage.tokenObjErr = "";
+                            localStorage.tokenObjErr = this.responseText;
+                         }
+                    };
+                    xhttp.open("GET", url, false);
+                    //xhttp.setRequestHeader("Content-type", "application/json");
+                    xhttp.send();
+            }
+
+
+
+
+//alert(qs["code"]);
+window.location.href = "http://my-gpi.io/gpitest/dashboard/?client_id="+qs["client_id"]+"&client_secret="+qs["client_secret"]+"&grant_type=authorization_code&code="+qs["code"]+"&redirect_uri=my-gpi.io/gpitest";
+//window.location.href = "http://178.128.251.254:3000/oauth/token?client_id="+qs["client_id"]+"&client_secret="+qs["client_secret"]+"&grant_type=authorization_code&code="+qs["code"]+"&redirect_uri=my-gpi.io/gpitest"
+</script>
